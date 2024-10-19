@@ -1,0 +1,12 @@
+{
+  "name": "crud-api",
+  "version": "1.0.0",
+  "description": "Simple CRUD API",
+  "main": "index.js",
+  "type": "module",
+  "scripts": {
+    "start": "node src/index.js"
+  },
+  "author": "pambaka",
+  "license": "ISC"
+}
