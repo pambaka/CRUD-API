@@ -1,14 +1,14 @@
-import http from "node:http";
-import { endpoint, ERROR_MESSAGE } from "./const.js";
-import handleGetRequest from "./handle-get-request.js";
+import http, { IncomingMessage, ServerResponse } from "node:http";
+import { endpoint, ERROR_MESSAGE } from "./const";
+import handleGetRequest from "./handle-get-request";
 
 const host = "localhost";
 const port = 8080;
 
-const requestListener = (req, res) => {
+const requestListener = (req: IncomingMessage, res: ServerResponse) => {
   res.setHeader("Content-type", "application/json");
 
-  if (req.url.startsWith(endpoint)) {
+  if (req.url && req.url.startsWith(endpoint)) {
     switch (req.method) {
       case "GET":
         handleGetRequest(req, res);

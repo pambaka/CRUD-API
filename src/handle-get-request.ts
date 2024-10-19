@@ -1,9 +1,10 @@
-import { endpoint } from "./const.js";
-import users from "./users.js";
-import isValidUuid from "./utils/is-valid-uuid.js";
+import { IncomingMessage, ServerResponse } from "node:http";
+import { endpoint } from "./const";
+import users from "./users";
+import isValidUuid from "./utils/is-valid-uuid";
 
-const handleGetRequest = (req, res) => {
-  const urlEndpoint = req.url;
+const handleGetRequest = (req: IncomingMessage, res: ServerResponse) => {
+  const urlEndpoint = req.url!;
 
   if (urlEndpoint === endpoint) {
     res.writeHead(200);
@@ -15,9 +16,13 @@ const handleGetRequest = (req, res) => {
     if (!isValidUuid(userId)) {
       res.writeHead(400);
       res.end(JSON.stringify({ message: "Invalid user id format" }));
-    } else if (users[userId]) {
+    } else if (users[users.map((user) => user.id).indexOf(userId)]) {
       res.writeHead(200);
-      res.end(JSON.stringify({ user: users[userId] }));
+      res.end(
+        JSON.stringify({
+          user: users[users.map((user) => user.id).indexOf(userId)],
+        })
+      );
     } else {
       res.writeHead(404);
       res.end(
