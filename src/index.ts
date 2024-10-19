@@ -1,6 +1,8 @@
 import http, { IncomingMessage, ServerResponse } from "node:http";
 import { endpoint, ERROR_MESSAGE } from "./const";
 import handleGetRequest from "./handle-get-request";
+import handlePostRequest from "./handle-post-request";
+import sendResponse from "./utils/send-response";
 
 const host = "localhost";
 const port = 8080;
@@ -13,14 +15,16 @@ const requestListener = (req: IncomingMessage, res: ServerResponse) => {
       case "GET":
         handleGetRequest(req, res);
         break;
+      case "POST":
+        if (req.url === endpoint) handlePostRequest(req, res);
+        else sendResponse(res, 404, ERROR_MESSAGE.noExistEndpoint);
+        break;
       default:
-        res.writeHead(400);
-        res.end(JSON.stringify({ message: ERROR_MESSAGE.unsupportedMethod }));
+        sendResponse(res, 400, ERROR_MESSAGE.unsupportedMethod);
         break;
     }
   } else {
-    res.writeHead(404);
-    res.end(JSON.stringify({ message: ERROR_MESSAGE.noExistEndpoint }));
+    sendResponse(res, 404, ERROR_MESSAGE.noExistEndpoint);
   }
 };
 
