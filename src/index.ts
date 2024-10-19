@@ -3,6 +3,7 @@ import { endpoint, ERROR_MESSAGE } from "./const";
 import handleGetRequest from "./handle-get-request";
 import handlePostRequest from "./handle-post-request";
 import sendResponse from "./utils/send-response";
+import handleDeleteRequest from "./handle-delete-request";
 
 const host = "localhost";
 const port = 8080;
@@ -18,6 +19,9 @@ const requestListener = (req: IncomingMessage, res: ServerResponse) => {
       case "POST":
         if (req.url === endpoint) handlePostRequest(req, res);
         else sendResponse(res, 404, ERROR_MESSAGE.noExistEndpoint);
+        break;
+      case "DELETE":
+        handleDeleteRequest(req, res);
         break;
       default:
         sendResponse(res, 400, ERROR_MESSAGE.unsupportedMethod);

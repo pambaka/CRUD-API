@@ -8,10 +8,12 @@ const sendResponse = (
 ) => {
   res.writeHead(status);
 
-  const isError =
-    String(status).startsWith("4") || String(status).startsWith("5");
+  const isMessage =
+    String(status).startsWith("4") ||
+    String(status).startsWith("5") ||
+    status === 204;
 
-  const resBody = isError ? { message: data } : data;
+  const resBody = isMessage ? { message: data } : data;
 
   res.end(JSON.stringify(resBody));
 };
