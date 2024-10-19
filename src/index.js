@@ -1,19 +1,26 @@
 import http from "node:http";
-import { ENDPOINTS } from "./const.js";
+import { endpoint, ERROR_MESSAGE } from "./const.js";
+import handleGetRequest from "./handle-get-request.js";
 
 const host = "localhost";
 const port = 8080;
 
 const requestListener = (req, res) => {
-  const endpoint = req.url;
+  res.setHeader("Content-type", "application/json");
 
-  if (endpoint === `/${ENDPOINTS.users}`) {
-    res.setHeader("Content-type", "application/json");
-    res.writeHead(200);
-    res.end(JSON.stringify({ users: {} }));
+  if (req.url.startsWith(endpoint)) {
+    switch (req.method) {
+      case "GET":
+        handleGetRequest(req, res);
+        break;
+      default:
+        res.writeHead(400);
+        res.end(JSON.stringify({ message: ERROR_MESSAGE.unsupportedMethod }));
+        break;
+    }
   } else {
     res.writeHead(404);
-    res.end("Endpoint doesn't exist");
+    res.end(JSON.stringify({ message: ERROR_MESSAGE.noExistEndpoint }));
   }
 };
 
