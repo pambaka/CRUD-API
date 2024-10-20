@@ -8,8 +8,7 @@ const sendResponse = (
 ) => {
   res.writeHead(status);
 
-  const isMessage =
-    String(status).startsWith("4") || String(status).startsWith("5");
+  const isMessage = typeof data === "string";
 
   const resBody = isMessage ? { message: data } : data;
 

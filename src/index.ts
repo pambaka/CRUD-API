@@ -5,6 +5,7 @@ import handlePostRequest from "./handle-post-request";
 import sendResponse from "./utils/send-response";
 import handleDeleteRequest from "./handle-delete-request";
 import getEndpointFromRequest from "./utils/get-endpoint-from-request";
+import handlePutRequest from "./handle-put-request";
 
 const port = 8080;
 
@@ -25,6 +26,9 @@ const requestListener = (req: IncomingMessage, res: ServerResponse) => {
       case "POST":
         if (endpointRE.test(urlEndpoint)) handlePostRequest(req, res);
         else sendResponse(res, 404, ERROR_MESSAGE.noExistEndpoint);
+        break;
+      case "PUT":
+        handlePutRequest(req, res);
         break;
       case "DELETE":
         handleDeleteRequest(req, res);

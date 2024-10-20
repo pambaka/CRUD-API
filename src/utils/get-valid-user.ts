@@ -11,8 +11,7 @@ const getValidUser: (user: unknown) => User | null = (user) => {
     typeof user.age === "number" &&
     "hobbies" in user &&
     Array.isArray(user.hobbies) &&
-    user.hobbies.length !== 0 &&
-    user.hobbies.every((hobby) => hobby && typeof hobby === "string")
+    user.hobbies.every((hobby) => typeof hobby === "string")
   )
     return {
       id: crypto.randomUUID(),
