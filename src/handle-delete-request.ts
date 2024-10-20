@@ -11,7 +11,7 @@ const handleDeleteRequest = (req: IncomingMessage, res: ServerResponse) => {
   if (isValidUuid(userId)) {
     const index = getUserIndex(userId);
 
-    if (index) {
+    if (index >= 0) {
       users.splice(index, 1);
 
       res.writeHead(204);
