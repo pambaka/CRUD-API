@@ -1,33 +1,25 @@
 import { IncomingMessage, ServerResponse } from "node:http";
-import { endpoint } from "./const";
+import { endpoint, ERROR_MESSAGE } from "./const";
 import users from "./users";
 import isValidUuid from "./utils/is-valid-uuid";
+import sendResponse from "./utils/send-response";
+import getUserIndex from "./utils/get-user-index";
 
 const handleGetRequest = (req: IncomingMessage, res: ServerResponse) => {
   const urlEndpoint = req.url!;
 
   if (urlEndpoint === endpoint) {
-    res.writeHead(200);
-    res.end(JSON.stringify({ users }));
+    sendResponse(res, 200, { users });
   } else {
-    const urlFragments = urlEndpoint.split("/");
-    const userId = urlFragments[3];
+    const userId = urlEndpoint.split("/")[3];
 
-    if (!isValidUuid(userId)) {
-      res.writeHead(400);
-      res.end(JSON.stringify({ message: "Invalid user id format" }));
-    } else if (users[users.map((user) => user.id).indexOf(userId)]) {
-      res.writeHead(200);
-      res.end(
-        JSON.stringify({
-          user: users[users.map((user) => user.id).indexOf(userId)],
-        })
-      );
+    if (isValidUuid(userId)) {
+      const index = getUserIndex(userId);
+
+      if (index) sendResponse(res, 200, { user: users[index] });
+      else sendResponse(res, 404, ERROR_MESSAGE.userNotFound(userId));
     } else {
-      res.writeHead(404);
-      res.end(
-        JSON.stringify({ message: `User with id ${userId} is not found` })
-      );
+      sendResponse(res, 400, ERROR_MESSAGE.invalidUuid);
     }
   }
 };

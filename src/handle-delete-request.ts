@@ -11,14 +11,12 @@ const handleDeleteRequest = (req: IncomingMessage, res: ServerResponse) => {
   if (isValidUuid(userId)) {
     const index = getUserIndex(userId);
 
-    if (index === -1)
-      sendResponse(res, 404, ERROR_MESSAGE.userNotFound(userId));
-    else {
+    if (index) {
       users.splice(index, 1);
 
       res.writeHead(204);
       res.end();
-    }
+    } else sendResponse(res, 404, ERROR_MESSAGE.userNotFound(userId));
   } else sendResponse(res, 400, ERROR_MESSAGE.invalidUuid);
 };
 
