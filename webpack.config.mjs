@@ -1,5 +1,9 @@
 import path from "node:path";
 import { fileURLToPath } from "url";
+import dotenv from "dotenv";
+import pkg from "webpack";
+
+const { DefinePlugin } = pkg;
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 
@@ -17,7 +21,9 @@ const config = {
     filename: "index.js",
     path: path.resolve(__dirname, "./dist"),
   },
-  plugins: [],
+  plugins: [
+    new DefinePlugin({ "process.env": JSON.stringify(dotenv.config().parsed) }),
+  ],
 };
 
 export default config;

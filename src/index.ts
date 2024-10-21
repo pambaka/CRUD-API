@@ -1,15 +1,25 @@
 import http, { IncomingMessage, ServerResponse } from "node:http";
-import { endpoint, endpointRE, ERROR_MESSAGE, host } from "./const";
+import {
+  fallbackPort,
+  endpoint,
+  endpointRE,
+  ERROR_MESSAGE,
+  host,
+} from "./const";
 import handleGetRequest from "./handle-get-request";
 import handlePostRequest from "./handle-post-request";
 import sendResponse from "./utils/send-response";
 import handleDeleteRequest from "./handle-delete-request";
 import getEndpointFromRequest from "./utils/get-endpoint-from-request";
 import handlePutRequest from "./handle-put-request";
+import dotenv from "dotenv";
 
-const port = 8080;
+dotenv.config();
 
-const requestListener = (req: IncomingMessage, res: ServerResponse) => {
+const envPort = parseInt(process.env.SERVER_PORT ?? "");
+const port = envPort ? envPort : fallbackPort;
+
+export const requestListener = (req: IncomingMessage, res: ServerResponse) => {
   res.setHeader("Content-type", "application/json");
 
   const urlEndpoint = getEndpointFromRequest(req.url!);

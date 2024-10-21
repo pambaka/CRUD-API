@@ -1,4 +1,5 @@
 export const host = "127.0.0.1";
+export const fallbackPort = 8080;
 
 export const endpoint = "/api/users";
 
