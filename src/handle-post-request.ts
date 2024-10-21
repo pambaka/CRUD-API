@@ -3,6 +3,7 @@ import { User } from "./types";
 import getValidUser from "./utils/get-valid-user";
 import users from "./users";
 import sendResponse from "./utils/send-response";
+import { ERROR_MESSAGE } from "./const";
 
 const handlePostRequest = (req: IncomingMessage, res: ServerResponse) => {
   let validUser: User | null = null;
@@ -21,12 +22,12 @@ const handlePostRequest = (req: IncomingMessage, res: ServerResponse) => {
         users.push(validUser);
         sendResponse(res, 201, { user: validUser });
       } else {
-        sendResponse(res, 400, "Invalid user data");
+        sendResponse(res, 400, ERROR_MESSAGE.invalidData);
       }
     } catch (error) {
       if (error instanceof SyntaxError)
-        sendResponse(res, 400, "Wrong JSON format");
-      else sendResponse(res, 500, "Something went wrong");
+        sendResponse(res, 400, ERROR_MESSAGE.invalidJson);
+      else sendResponse(res, 500, ERROR_MESSAGE.unknownError);
     }
   });
 };

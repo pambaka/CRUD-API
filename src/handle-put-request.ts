@@ -21,33 +21,29 @@ const handlePutRequest = (req: IncomingMessage, res: ServerResponse) => {
 
       req.on("close", () => {
         try {
-          let isUserUpdated = false;
           const user: unknown = JSON.parse(data);
 
-          if (user && typeof user === "object") {
-            if ("username" in user && typeof user.username === "string") {
-              users[index].username = user.username;
-              isUserUpdated = true;
-            }
-            if ("age" in user && typeof user.age === "number") {
-              users[index].age = user.age;
-              isUserUpdated = true;
-            }
-            if (
-              "hobbies" in user &&
-              Array.isArray(user.hobbies) &&
-              user.hobbies.every((hobby) => typeof hobby === "string")
-            ) {
-              users[index].hobbies = user.hobbies;
-              isUserUpdated = true;
-            }
-          }
-          if (isUserUpdated) sendResponse(res, 200, { user: users[index] });
-          else sendResponse(res, 400, "Nothing to update, check data format");
+          if (
+            user &&
+            typeof user === "object" &&
+            "username" in user &&
+            typeof user.username === "string" &&
+            "age" in user &&
+            typeof user.age === "number" &&
+            "hobbies" in user &&
+            Array.isArray(user.hobbies) &&
+            user.hobbies.every((hobby) => typeof hobby === "string")
+          ) {
+            users[index].username = user.username;
+            users[index].age = user.age;
+            users[index].hobbies = user.hobbies;
+
+            sendResponse(res, 200, { user: users[index] });
+          } else sendResponse(res, 400, ERROR_MESSAGE.invalidData);
         } catch (error: unknown) {
           if (error instanceof SyntaxError)
-            sendResponse(res, 400, "Wrong JSON format");
-          else sendResponse(res, 500, "Something went wrong");
+            sendResponse(res, 400, ERROR_MESSAGE.invalidJson);
+          else sendResponse(res, 500, ERROR_MESSAGE.unknownError);
         }
       });
     } else sendResponse(res, 404, ERROR_MESSAGE.userNotFound(userId));
