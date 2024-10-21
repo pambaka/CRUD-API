@@ -14,3 +14,5 @@ export const ERROR_MESSAGE = {
   unsupportedMethod: "Unsupported method",
   userNotFound: (userId: string) => `User with ID ${userId} is not found`,
 };
+
+export const dbServerPort = 3333;

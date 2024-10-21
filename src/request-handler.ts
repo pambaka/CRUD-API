@@ -1,8 +1,13 @@
-import { endpoint, ERROR_MESSAGE } from "./const";
+import { endpoint, endpointRE, ERROR_MESSAGE } from "./const";
 import handleGetRequest from "./multi/handle-get-request";
+import handlePostRequest from "./multi/handle-post-request";
 import getEndpointFromRequest from "./utils/get-endpoint-from-request";
 
-const requestHandler = (req: { method: string; url: string }) => {
+const requestHandler = async (req: {
+  method: string;
+  url: string;
+  data?: string;
+}) => {
   const urlEndpoint = getEndpointFromRequest(req.url);
   const pathFragments = urlEndpoint.split("/");
 
@@ -12,11 +17,10 @@ const requestHandler = (req: { method: string; url: string }) => {
   ) {
     switch (req.method) {
       case "GET":
-        return handleGetRequest(req);
-      //   case "POST":
-      //     if (endpointRE.test(urlEndpoint)) handlePostRequest(req, res);
-      //     else sendResponse(res, 404, ERROR_MESSAGE.noExistEndpoint);
-      //     break;
+        return await handleGetRequest(req);
+      case "POST":
+        if (endpointRE.test(urlEndpoint)) return await handlePostRequest(req);
+        return { statusCode: 404, data: ERROR_MESSAGE.noExistEndpoint };
       //   case "PUT":
       //     handlePutRequest(req, res);
       //     break;
