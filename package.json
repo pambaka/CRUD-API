@@ -5,7 +5,8 @@
   "main": "src/index.ts",
   "scripts": {
     "start:dev": "nodemon --watch src --exec ts-node src/index.ts",
-    "start:prod": "webpack --stats errors-only && node dist/index.js"
+    "start:prod": "webpack --stats errors-only && node dist/index.js",
+    "start:multi": "nodemon --watch src --exec ts-node src/multi.ts"
   },
   "author": "pambaka",
   "license": "ISC",
