@@ -1,0 +1,25 @@
+{
+  "name": "crud-api",
+  "version": "1.0.0",
+  "description": "Simple CRUD API",
+  "main": "src/index.ts",
+  "scripts": {
+    "start:dev": "nodemon --watch src --exec ts-node src/index.ts",
+    "start:prod": "webpack --stats errors-only && node dist/index.js",
+    "start:multi": "nodemon --watch src --exec ts-node src/multi.ts"
+  },
+  "author": "pambaka",
+  "license": "ISC",
+  "devDependencies": {
+    "@types/node": "^22.7.7",
+    "nodemon": "^3.1.7",
+    "ts-loader": "^9.5.1",
+    "ts-node": "^10.9.2",
+    "typescript": "^5.6.3",
+    "webpack": "^5.95.0",
+    "webpack-cli": "^5.1.4"
+  },
+  "dependencies": {
+    "dotenv": "^16.4.5"
+  }
+}
